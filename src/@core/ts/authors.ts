@@ -1,5 +1,7 @@
 import type { LocalizedOption, PrimaryMultiSelection } from './work-design';
 
+export type TsAuthorMarketStyle = 'kr' | 'jp' | 'western' | 'global';
+
 export interface TsAuthorStyleControls {
   /** 0 = 짧고 단문 위주, 100 = 길고 복문 위주 */
   sentenceLength: number;
@@ -19,6 +21,8 @@ export interface TsAuthorProfile {
   id: string;
   name: string;
   tagline: string;
+  /** KR/JP/Western은 국적이 아니라 기본 서사·문체 프리셋 계열을 뜻한다. */
+  marketStyle: TsAuthorMarketStyle;
   /** 사용자가 보는 간단한 전문 분야 */
   tsType: PrimaryMultiSelection;
   subgenre: PrimaryMultiSelection;
@@ -31,6 +35,13 @@ export interface TsAuthorProfile {
   /** 고급 설정에서만 노출. 기본 화면에서는 숨긴다. */
   styleControls: TsAuthorStyleControls;
 }
+
+export const TS_AUTHOR_MARKET_STYLES: LocalizedOption[] = [
+  { id: 'kr', ko: '한국 웹소설형', en: 'Korean Web-Novel Style' },
+  { id: 'jp', ko: '일본 TSF·라노베형', en: 'Japanese TSF / Light-Novel Style' },
+  { id: 'western', ko: '서양 TG·TF 장르형', en: 'Western TG / TF Genre Style' },
+  { id: 'global', ko: '혼합·글로벌형', en: 'Hybrid / Global Style' },
+];
 
 export const TS_AUTHOR_STRENGTHS: LocalizedOption[] = [
   { id: 'transformation', ko: '변화묘사', en: 'Transformation' },
@@ -45,22 +56,26 @@ export const TS_AUTHOR_STRENGTHS: LocalizedOption[] = [
   { id: 'mystery', ko: '미스터리', en: 'Mystery' },
   { id: 'character', ko: '캐릭터성', en: 'Character Voice' },
   { id: 'serial_hook', ko: '회차 후킹', en: 'Serial Hooks' },
+  { id: 'feminization', ko: '여성화 과정', en: 'Feminization Arc' },
+  { id: 'identity', ko: '자아·정체성', en: 'Identity' },
 ];
 
 /**
  * TS판 작가 시스템 절충안
  *
- * 겉: 대표 TS 타입 + 부장르 + 분위기 + 강점 + 문체 요약만 보여준다.
+ * 겉: 지역/시장 스타일 + 대표 TS 타입 + 부장르 + 분위기 + 강점 + 문체 요약만 보여준다.
  * 속: 기존 AiAuthor의 writingStyle/coreDirectives/identityCore/기억/대화/성장 기능은 유지한다.
  * 고급: 수치형 문체 조절은 필요할 때만 펼쳐서 사용한다.
  *
- * 즉 "작가를 단순화"하는 것이 아니라 "작가를 고르는 화면만 단순화"한다.
+ * "일본형/서양형"은 사람이나 국적을 고정관념화하는 값이 아니라
+ * 라노베·TSF, TG·TF 장르소설 등 독자가 익숙한 서사 관습과 문체 프리셋을 선택하는 값이다.
  */
 export const DEFAULT_TS_AUTHORS: TsAuthorProfile[] = [
   {
     id: 'yoonseul',
     name: '윤슬',
     tagline: '몸이 바뀐 뒤의 작은 차이를 오래 바라보는 작가',
+    marketStyle: 'kr',
     tsType: { primary: 'gender_change', secondary: ['transformation'] },
     subgenre: { primary: 'modern_daily', secondary: ['workplace'] },
     mood: { primary: 'calm', secondary: ['healing', 'light_dark'] },
@@ -77,6 +92,7 @@ export const DEFAULT_TS_AUTHORS: TsAuthorProfile[] = [
     id: 'mir',
     name: '미르',
     tagline: '바뀐 몸보다 바뀐 관계에서 웃음을 뽑는 작가',
+    marketStyle: 'kr',
     tsType: { primary: 'body_swap', secondary: ['transformation', 'possession'] },
     subgenre: { primary: 'modern_daily', secondary: ['school_academy', 'comedy'] },
     mood: { primary: 'comic', secondary: ['awkward', 'fluttering'] },
@@ -93,6 +109,7 @@ export const DEFAULT_TS_AUTHORS: TsAuthorProfile[] = [
     id: 'hajin',
     name: '하진',
     tagline: '남의 몸에서 나를 잃지 않으려는 사람을 쓰는 작가',
+    marketStyle: 'kr',
     tsType: { primary: 'possession', secondary: ['reincarnation', 'gender_change'] },
     subgenre: { primary: 'modern_fantasy', secondary: ['fantasy', 'mystery'] },
     mood: { primary: 'light_dark', secondary: ['salvation', 'tense'] },
@@ -109,6 +126,7 @@ export const DEFAULT_TS_AUTHORS: TsAuthorProfile[] = [
     id: 'rua',
     name: '루아',
     tagline: '성별보다 두 사람 사이가 어떻게 달라지는지를 쓰는 작가',
+    marketStyle: 'kr',
     tsType: { primary: 'gender_change', secondary: ['possession', 'body_swap'] },
     subgenre: { primary: 'romance', secondary: ['modern_daily'] },
     mood: { primary: 'fluttering', secondary: ['romantic', 'healing'] },
@@ -125,6 +143,7 @@ export const DEFAULT_TS_AUTHORS: TsAuthorProfile[] = [
     id: 'sera',
     name: '세라',
     tagline: '변신의 질감과 낯선 몸의 감각을 이미지처럼 쓰는 작가',
+    marketStyle: 'global',
     tsType: { primary: 'skinsuit', secondary: ['transformation', 'reality_rewrite'] },
     subgenre: { primary: 'mystery', secondary: ['fantasy', 'horror'] },
     mood: { primary: 'dreamlike', secondary: ['mystery', 'awkward'] },
@@ -141,6 +160,7 @@ export const DEFAULT_TS_AUTHORS: TsAuthorProfile[] = [
     id: 'raven',
     name: '레이븐',
     tagline: '되돌릴 수 없다는 사실이 사람을 어떻게 압박하는지 쓰는 작가',
+    marketStyle: 'global',
     tsType: { primary: 'reality_rewrite', secondary: ['skinsuit', 'gender_change'] },
     subgenre: { primary: 'horror', secondary: ['mystery', 'dark'] },
     mood: { primary: 'dark', secondary: ['tense', 'extreme_dark'] },
@@ -157,6 +177,7 @@ export const DEFAULT_TS_AUTHORS: TsAuthorProfile[] = [
     id: 'haru',
     name: '하루',
     tagline: '캐릭터가 사랑받는 순간을 가장 잘 아는 작가',
+    marketStyle: 'kr',
     tsType: { primary: 'crossdressing', secondary: ['gender_change', 'transformation'] },
     subgenre: { primary: 'streaming', secondary: ['entertainment', 'modern_daily'] },
     mood: { primary: 'nadedade', secondary: ['healing', 'comic'] },
@@ -173,6 +194,7 @@ export const DEFAULT_TS_AUTHORS: TsAuthorProfile[] = [
     id: 'zero',
     name: '제로',
     tagline: 'TS를 규칙이 있는 시스템으로 설계하는 작가',
+    marketStyle: 'global',
     tsType: { primary: 'avatar', secondary: ['surgery_modification', 'transformation'] },
     subgenre: { primary: 'sf', secondary: ['game_system', 'modern_fantasy'] },
     mood: { primary: 'mystery', secondary: ['tense'] },
@@ -185,6 +207,74 @@ export const DEFAULT_TS_AUTHORS: TsAuthorProfile[] = [
     ],
     styleControls: { sentenceLength: 48, dialogueRatio: 42, pacing: 34, introspection: 34, descriptionDensity: 50, sensoryDetail: 38 },
   },
+  {
+    id: 'aoi',
+    name: '아오이',
+    tagline: 'TSF의 일상과 반응을 라노베 호흡으로 경쾌하게 쓰는 작가',
+    marketStyle: 'jp',
+    tsType: { primary: 'gender_change', secondary: ['body_swap', 'feminization'] },
+    subgenre: { primary: 'school_academy', secondary: ['modern_daily', 'romance'] },
+    mood: { primary: 'comic', secondary: ['fluttering', 'healing'] },
+    strengthIds: ['character', 'dialogue', 'daily_adaptation', 'comedy'],
+    writingStyleSummary: '가까운 시점, 빠른 반응, 짧은 장면 전환을 활용하는 일본 라노베형 TSF 문체. 변화 뒤의 일상 이벤트와 캐릭터 케미를 중심으로 읽히게 한다.',
+    coreDirectives: [
+      '설명문보다 주인공의 즉각적인 반응과 대화로 설정을 드러낸다.',
+      '캐릭터성을 위해 같은 개그를 반복하기보다 상황마다 다른 반응을 만든다.',
+      '여체화나 교체 자체보다 그 뒤의 학교·친구·연애 관계 변화까지 이어간다.',
+    ],
+    styleControls: { sentenceLength: 36, dialogueRatio: 74, pacing: 34, introspection: 46, descriptionDensity: 34, sensoryDetail: 36 },
+  },
+  {
+    id: 'kureha',
+    name: '쿠레하',
+    tagline: '변한 몸과 원래 자아 사이의 틈을 천천히 파고드는 TSF 작가',
+    marketStyle: 'jp',
+    tsType: { primary: 'feminization', secondary: ['gender_change', 'reality_rewrite', 'possession'] },
+    subgenre: { primary: 'modern_daily', secondary: ['mystery', 'romance'] },
+    mood: { primary: 'calm', secondary: ['light_dark', 'dreamlike'] },
+    strengthIds: ['psychology', 'identity', 'feminization', 'relationship'],
+    writingStyleSummary: '독백과 생활 디테일을 통해 여성화가 인식과 관계에 스며드는 과정을 길게 축적한다. 결론을 서두르지 않고 작은 선택의 변화를 누적한다.',
+    coreDirectives: [
+      '신체 변화와 자아 변화를 같은 속도로 처리하지 않는다.',
+      '여성화 과정은 단계별 생활 변화와 감정의 반응으로 보여준다.',
+      '정체성 갈등을 선언문보다 습관, 호칭, 관계의 어긋남으로 드러낸다.',
+    ],
+    styleControls: { sentenceLength: 62, dialogueRatio: 42, pacing: 80, introspection: 90, descriptionDensity: 64, sensoryDetail: 66 },
+  },
+  {
+    id: 'morgan',
+    name: 'Morgan',
+    tagline: '과정과 원인을 선명하게 보여주는 TG·TF 변환물 작가',
+    marketStyle: 'western',
+    tsType: { primary: 'feminization', secondary: ['transformation', 'gender_change', 'surgery_modification'] },
+    subgenre: { primary: 'modern_fantasy', secondary: ['sf', 'modern_daily'] },
+    mood: { primary: 'tense', secondary: ['awkward', 'mystery'] },
+    strengthIds: ['transformation', 'feminization', 'worldbuilding', 'identity'],
+    writingStyleSummary: '원인→변화→결과를 명확히 연결하는 서양 TG/TF 장르소설형 문체. 물리적 변화 과정과 선택의 결과를 구체적으로 쓰되 장면의 목적을 잃지 않는다.',
+    coreDirectives: [
+      '변화 단계와 원인을 독자가 추적할 수 있게 일관되게 유지한다.',
+      'Feminization을 단순 외형 변화가 아니라 행동·관계·자기인식 변화와 구분해 다룬다.',
+      '직접적인 문장을 선호하되 변화 묘사가 이야기 진행을 멈추게 하지 않는다.',
+    ],
+    styleControls: { sentenceLength: 48, dialogueRatio: 34, pacing: 42, introspection: 58, descriptionDensity: 72, sensoryDetail: 84 },
+  },
+  {
+    id: 'avery',
+    name: 'Avery',
+    tagline: '몸이 바뀐 뒤에도 선택권과 정체성을 끝까지 추적하는 작가',
+    marketStyle: 'western',
+    tsType: { primary: 'body_swap', secondary: ['reality_rewrite', 'gender_change', 'avatar'] },
+    subgenre: { primary: 'mystery', secondary: ['sf', 'romance'] },
+    mood: { primary: 'mystery', secondary: ['tense', 'romantic'] },
+    strengthIds: ['identity', 'relationship', 'mystery', 'dialogue'],
+    writingStyleSummary: '명료한 서술과 갈등 중심 장면을 사용한다. body swap·gender change를 정체성, 동의, 사회적 역할, 관계의 재협상 문제와 연결한다.',
+    coreDirectives: [
+      '인물의 선택권과 정보 비대칭을 갈등의 핵심 요소로 사용한다.',
+      '변화의 의미를 독백만으로 결론내리지 말고 관계와 행동에서 검증한다.',
+      '미스터리는 설정의 모순이 아니라 숨겨진 정보와 선택의 결과에서 만든다.',
+    ],
+    styleControls: { sentenceLength: 46, dialogueRatio: 56, pacing: 36, introspection: 62, descriptionDensity: 44, sensoryDetail: 42 },
+  },
 ];
 
 export interface TsAuthorMatchInput {
@@ -192,6 +282,7 @@ export interface TsAuthorMatchInput {
   subgenreIds?: string[];
   moodIds?: string[];
   strengthIds?: string[];
+  marketStyle?: TsAuthorMarketStyle;
 }
 
 /**
@@ -210,5 +301,6 @@ export function scoreTsAuthorMatch(author: TsAuthorProfile, input: TsAuthorMatch
   return overlap(input.tsTypeIds, authorTypes, 5)
     + overlap(input.subgenreIds, authorSubgenres, 3)
     + overlap(input.moodIds, authorMoods, 3)
-    + overlap(input.strengthIds, strengths, 2);
+    + overlap(input.strengthIds, strengths, 2)
+    + (input.marketStyle && input.marketStyle === author.marketStyle ? 2 : 0);
 }
