@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "types": ["vite/client"],
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@core/*": ["src/@core/*"],
+      "@modules/*": ["src/@modules/*"],
+      "@shared/*": ["src/@shared/*"],
+      "@services/*": ["src/@services/*"],
+      "@stores/*": ["src/@stores/*"]
+    }
+  },
+  "include": ["src"],
+  "exclude": [
+    "src/@modules/tts/**",
+    "src/@services/tts/**",
+    "src/@stores/ttsStore.ts",
+    "src/@core/types/tts.types.ts"
+  ],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
