@@ -46,10 +46,27 @@ export const TS_DIRECTIONS: LocalizedOption[] = [
 ];
 
 export const TS_TYPES: LocalizedOption[] = [
-  { id: 'gender_change', ko: '성전환', en: 'Gender Transformation', aliases: ['TS', 'TS물', 'TSF', 'TG'] },
+  {
+    id: 'gender_change',
+    ko: '성전환',
+    en: 'Gender Transformation',
+    aliases: ['TS', 'TS물', 'TSF', 'TG', 'gender bender', 'genderbend', 'gender swap', 'genderswap', '女体化', 'にょた', '男体化'],
+  },
+  {
+    id: 'feminization',
+    ko: '여성화',
+    en: 'Feminization',
+    aliases: ['Feminisation', 'feminization TF', 'gradual feminization', 'female transformation', '여성화 진행'],
+  },
+  {
+    id: 'masculinization',
+    ko: '남성화',
+    en: 'Masculinization',
+    aliases: ['Masculinisation', 'masculinization TF', 'gradual masculinization', 'male transformation', '남성화 진행'],
+  },
   { id: 'transformation', ko: '변신', en: 'Transformation', aliases: ['변화', 'TF', 'TFTG'] },
   { id: 'possession', ko: '빙의', en: 'Possession', aliases: ['憑依'] },
-  { id: 'body_swap', ko: '바디스왑', en: 'Body Swap', aliases: ['교체', '입れ替わり'] },
+  { id: 'body_swap', ko: '바디스왑', en: 'Body Swap', aliases: ['교체', '入れ替わり'] },
   { id: 'reincarnation', ko: '환생·전생', en: 'Reincarnation', aliases: ['환생', '전생', '転生'] },
   { id: 'crossdressing', ko: '여장·남장', en: 'Crossdressing', aliases: ['여장', '남장'] },
   { id: 'skinsuit', ko: '가죽·스킨', en: 'Skinsuit / Bodysuit', aliases: ['가죽물', '皮モノ'] },
