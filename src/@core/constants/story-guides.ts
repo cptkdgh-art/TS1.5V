@@ -1,4 +1,9 @@
-import { buildTsGenreBrief } from '@core/ts';
+import {
+  buildTsGenreBrief,
+  buildTsWritingDirective,
+  type TsAuthorProfile,
+  type TsWorkDesign,
+} from '@core/ts';
 
 export interface StoryGenreGuide {
   id: string;
@@ -57,18 +62,40 @@ export function combineMood(tags: string[], freeText: string): string {
   return `${tagText} | ${freeText.trim()}`;
 }
 
-export function buildStoryClassificationText(input: {
+export interface StoryClassificationInput {
   primaryGenre?: string;
   subgenres?: string[];
   themes?: string[];
   subject?: string;
-}): string {
+  /** TS 전용 작품 설계가 있으면 표시용 분류 대신 활성 집필 지시문까지 컴파일한다. */
+  tsDesign?: TsWorkDesign;
+  tsAuthor?: TsAuthorProfile | null;
+  chapterInstruction?: string;
+  continuityFacts?: string[];
+  exclusions?: string[];
+  additionalInstructions?: string[];
+}
+
+export function buildStoryClassificationText(input: StoryClassificationInput): string {
   const classification = [
     input.primaryGenre ? `주 장르: ${input.primaryGenre}` : '',
     input.subgenres?.length ? `부 장르: ${input.subgenres.join(', ')}` : '',
     input.themes?.length ? `주제: ${input.themes.join(', ')}` : '',
     input.subject?.trim() ? `주제·소재 추가 설명: ${input.subject.trim()}` : '',
   ].filter(Boolean).join('\n');
+
+  if (input.tsDesign) {
+    const activeDirective = buildTsWritingDirective({
+      design: input.tsDesign,
+      author: input.tsAuthor,
+      chapterInstruction: input.chapterInstruction,
+      continuityFacts: input.continuityFacts,
+      exclusions: input.exclusions,
+      additionalInstructions: input.additionalInstructions,
+    });
+
+    return [classification, activeDirective].filter(Boolean).join('\n\n');
+  }
 
   const tsBrief = buildTsGenreBrief(input);
   return [classification, tsBrief].filter(Boolean).join('\n\n');
