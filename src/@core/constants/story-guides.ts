@@ -4,6 +4,7 @@ import {
   type TsAuthorProfile,
   type TsWorkDesign,
 } from '@core/ts';
+import { getAuthorVoiceContract } from '@core/ts/author-voice';
 
 export interface StoryGenreGuide {
   id: string;
@@ -48,7 +49,6 @@ export function parseMood(mood: string): { tags: string[]; freeText: string } {
     const freeText = parts.filter((part) => !tags.includes(part)).join(', ');
     return { tags, freeText };
   }
-
   return {
     tags: mood.slice(0, pipeIndex).split(',').map((part) => part.trim()).filter(Boolean),
     freeText: mood.slice(pipeIndex + 1).trim(),
@@ -67,9 +67,11 @@ export interface StoryClassificationInput {
   subgenres?: string[];
   themes?: string[];
   subject?: string;
-  /** TS 전용 작품 설계가 있으면 표시용 분류 대신 활성 집필 지시문까지 컴파일한다. */
   tsDesign?: TsWorkDesign;
   tsAuthor?: TsAuthorProfile | null;
+  /** Current edited/native identity, not a lookup of the original default. */
+  authorIdentityContext?: string;
+  authorMemory?: string[];
   chapterInstruction?: string;
   continuityFacts?: string[];
   exclusions?: string[];
@@ -88,15 +90,18 @@ export function buildStoryClassificationText(input: StoryClassificationInput): s
     const activeDirective = buildTsWritingDirective({
       design: input.tsDesign,
       author: input.tsAuthor,
+      authorIdentityContext: input.authorIdentityContext,
+      authorMemory: input.authorMemory,
       chapterInstruction: input.chapterInstruction,
       continuityFacts: input.continuityFacts,
       exclusions: input.exclusions,
       additionalInstructions: input.additionalInstructions,
     });
-
     return [classification, activeDirective].filter(Boolean).join('\n\n');
   }
 
   const tsBrief = buildTsGenreBrief(input);
-  return [classification, tsBrief].filter(Boolean).join('\n\n');
+  // This legacy branch is used by the current native writer while tsDesign wiring is pending.
+  // Non-TS and empty classification output deliberately remains unchanged.
+  return [classification, tsBrief ? getAuthorVoiceContract() : '', tsBrief].filter(Boolean).join('\n\n');
 }

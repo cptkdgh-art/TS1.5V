@@ -1,65 +1,44 @@
 import type { TsWorkDesign } from './work-design';
 import { buildTsWorkDesignBrief } from './work-design';
 
-/**
- * TS 장르 공통 코어.
- * 작품별 취향과 작가 개성보다 위에 군림하는 강제 플롯이 아니라,
- * 확정된 변화 규칙과 상태 연속성을 놓치지 않기 위한 공통 기준이다.
- */
-export const TS_GENRE_CORE_GUIDE = `--- [TS 장르 전문 문법 — 사용자 지시와 작품 설정을 우선] ---
-TS 작품에서는 변화 그 자체뿐 아니라 변화가 인물의 자기인식·신체감각·관계·사회적 위치·선택을 어떻게 바꾸는지 추적한다.
+/** Shared conditional facts, never an automatic plot or a replacement author voice. */
+export const TS_GENRE_CORE_GUIDE = `--- [TS 연속성 참고 — 선택·확정된 설정에만 적용] ---
+TS라는 분류만으로 신체 변화·정체성 갈등·연애·사회적 역할 변화·복귀 사건을 추가하지 않는다.
 
-1. 확정된 변화 규칙을 일관되게 유지한다.
-- 원인, 속도, 범위, 가역성, 재변신 가능 여부, 비용과 부작용을 작품 안에서 임의로 뒤집지 않는다.
-- 이미 확정된 신체 상태와 변신 단계가 이유 없이 되돌아가거나 중복되지 않게 한다.
+1. 이미 확정된 변화 규칙만 유지한다.
+- 원인·속도·범위·비용·부작용·가역성이 정해졌다면 모순시키지 않는다. 미정인 항목을 사전의 기본값으로 확정하지 않는다.
+- 변화가 점진적이라는 사실과 문장이 느리게 읽힌다는 성향을 혼동하지 않는다.
 
-2. 작품의 대표 TS 타입을 중심축으로 삼는다.
-- 추가 TS 타입은 대표 타입을 대체하지 않고 보조 요소로 결합한다.
-- 예: 대표가 빙의이고 추가가 현실개변이라면, 작품의 기본 체험은 빙의이며 현실개변은 그 체험을 보강한다.
+2. 몸·의식·기억·정체성은 서로 별개다.
+- 몸이 바뀌었다고 성격·기억·기호가 자동으로 바뀌지 않는다.
+- 교체나 빙의가 설정되어 있다면 누가 어느 몸에 있고 무엇을 아는지 유지한다. 원주인 공존·기억 습득은 설정된 경우에만 존재한다.
 
-3. 배경 장르와 TS 타입을 구분한다.
-- 성전환·변신·빙의·바디스왑·가죽 등은 TS 타입이다.
-- 현대일상·현대판타지·직장·인방·판타지 등은 이야기가 펼쳐지는 부장르/배경이다.
+3. 정보 공개와 세계 기록을 유지한다.
+- 누가 정체를 알고 있는지, 어떤 기록이 변경되었는지는 이전 사건을 따른다.
+- 들킴·기억개변·관계 변화가 없었다면 이를 새로 발생시키라는 뜻이 아니다.
 
-4. 분위기는 사건의 종류가 아니라 장면의 정서와 연출 강도를 조절한다.
-- 힐링, 코믹, 약피폐, 피폐 등의 대표 분위기를 우선하고 추가 분위기는 보조한다.
+4. 작품 분류와 작가 숙련 분야를 분리한다.
+- 대표·추가 타입, 배경, 분위기는 사용자가 선택한 작품 정보다. 작가 전문 태그로 작품 선택값을 변경하지 않는다.
+- 구체적인 작품 핵심·시리즈/권별 지시가 넓은 분류명보다 우선한다.
 
-5. 정신과 신체를 자동으로 동일시하지 않는다.
-- 몸이 바뀌었다는 이유만으로 성격·기억·취향이 즉시 바뀌었다고 가정하지 않는다.
-- 정신·기억 변화는 작품의 세부 설정에서 확정된 경우에만 반영한다.
+5. 사전의 흐름도와 예시 장면은 필수가 아니다.
+- 모든 작품이 최초 인지·적응·발각·정체성 변화·복귀 순서를 거칠 필요는 없다.
+- 장면은 사용자 요청과 현재 이야기의 필요에서 나오며, 확정된 관계·사건 순서·결말을 문체 성향으로 바꾸지 않는다.`;
 
-6. 관계 변화와 정보 격차를 누적한다.
-- 누가 원래 정체를 아는지, 어떤 호칭과 관계가 바뀌었는지, 비밀이 어디까지 공유되었는지 장기적으로 추적한다.
-
-7. 반복 확인 장면을 기계적으로 재사용하지 않는다.
-- 거울, 신체 확인, 화장실, 옷 확인 등은 현재 장면에 필요할 때만 사용하며 같은 효과를 반복하지 않는다.
-
-8. 작품 핵심 자유입력을 우선한다.
-- 태그보다 사용자가 직접 적은 '작품 핵심'과 '시리즈/권별 핵심'이 구체적이면 이를 우선하여 장면과 플롯을 설계한다.`;
-
-/**
- * TS1.5V의 새 작품 설계 모델용 브리프.
- */
 export function buildTsStudioBrief(design: TsWorkDesign): string {
-  const designBrief = buildTsWorkDesignBrief(design);
-  return `${TS_GENRE_CORE_GUIDE}\n\n--- [작품별 TS 설계] ---\n${designBrief}`;
+  return `${TS_GENRE_CORE_GUIDE}\n\n--- [작품별 TS 설계] ---\n${buildTsWorkDesignBrief(design)}`;
 }
 
-/**
- * 구 1.5V 호출부 호환용.
- * 앱 몸통 이식 과정에서 buildTsStudioBrief로 순차 교체한다.
- */
+/** Existing 1.5 callers can still provide their original classification fields. */
 export function buildTsGenreBrief(input: {
   primaryGenre?: string;
   subgenres?: string[];
   themes?: string[];
 }): string {
   if (input.primaryGenre !== 'TS') return '';
-
   const selected = [
     input.subgenres?.length ? `선택된 TS 요소: ${input.subgenres.join(', ')}` : '',
     input.themes?.length ? `추가 초점: ${input.themes.join(', ')}` : '',
   ].filter(Boolean).join('\n');
-
   return `${TS_GENRE_CORE_GUIDE}${selected ? `\n\n${selected}` : ''}`;
 }

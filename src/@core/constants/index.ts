@@ -7,5 +7,5 @@
  * ============================================================
  */
 
-export { DEFAULT_AUTHORS } from './defaultAuthors';
+export { DEFAULT_AUTHORS } from '../ts/runtime-authors';
 export { FIXED_RECENT_RAW_CHAPTERS } from './writingMemory';
