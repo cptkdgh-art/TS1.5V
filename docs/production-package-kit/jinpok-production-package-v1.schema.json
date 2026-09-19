@@ -1,0 +1,1291 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jinpok-studio.vercel.app/schemas/jinpok-production-package-v1.schema.json",
+  "title": "Jinpok Studio Production Package v1",
+  "description": "진폭스튜디오 1.5V 제작 패키지(.jinpok.json) 규격. 외부 AI가 작가, 작품, 기획, 세계관, 원고를 생성해 안전하게 입고하기 위한 형식이다.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "schemaVersion",
+    "package",
+    "sourceWorkspace",
+    "manifest",
+    "payload"
+  ],
+  "properties": {
+    "kind": {
+      "const": "jinpok-production-package"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "package": {
+      "$ref": "#/$defs/packageMetadata"
+    },
+    "sourceWorkspace": {
+      "$ref": "#/$defs/sourceWorkspace"
+    },
+    "manifest": {
+      "$ref": "#/$defs/manifest"
+    },
+    "payload": {
+      "$ref": "#/$defs/payload"
+    }
+  },
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "timestamp": {
+      "type": "number",
+      "minimum": 0
+    },
+    "packageMetadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "packageId",
+        "lineageId",
+        "revision",
+        "parentPackageId",
+        "title",
+        "purpose",
+        "publisher",
+        "createdAt",
+        "sourceApp",
+        "sourceSchema"
+      ],
+      "properties": {
+        "packageId": {
+          "$ref": "#/$defs/nonEmptyString",
+          "description": "이 파일 한 개의 고유 ID"
+        },
+        "lineageId": {
+          "$ref": "#/$defs/nonEmptyString",
+          "description": "왕복 수정본들이 함께 공유하는 계보 ID"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "parentPackageId": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/nonEmptyString"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "purpose": {
+          "enum": [
+            "planning",
+            "commission",
+            "continuation",
+            "delivery",
+            "settings-share"
+          ]
+        },
+        "publisher": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sourceApp": {
+          "const": "jinpok-stido"
+        },
+        "sourceSchema": {
+          "const": "1.5"
+        }
+      }
+    },
+    "sourceWorkspace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "name": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "sectionSelection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authors",
+        "workCore",
+        "planning",
+        "worldbuilding",
+        "manuscript",
+        "memory",
+        "collaboration",
+        "assets"
+      ],
+      "properties": {
+        "authors": {
+          "type": "boolean"
+        },
+        "workCore": {
+          "type": "boolean"
+        },
+        "planning": {
+          "type": "boolean"
+        },
+        "worldbuilding": {
+          "type": "boolean"
+        },
+        "manuscript": {
+          "type": "boolean"
+        },
+        "memory": {
+          "type": "boolean"
+        },
+        "collaboration": {
+          "type": "boolean"
+        },
+        "assets": {
+          "type": "boolean"
+        }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authors",
+        "series",
+        "novels",
+        "chapters",
+        "characters",
+        "worldviewFiles"
+      ],
+      "properties": {
+        "authors": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "series": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "novels": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "chapters": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "characters": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "worldviewFiles": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sections",
+        "counts",
+        "omittedSensitiveFields",
+        "assetBytes"
+      ],
+      "properties": {
+        "sections": {
+          "$ref": "#/$defs/sectionSelection"
+        },
+        "counts": {
+          "$ref": "#/$defs/counts"
+        },
+        "omittedSensitiveFields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "assetBytes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "required": [
+        "role",
+        "parts"
+      ],
+      "properties": {
+        "role": {
+          "enum": [
+            "user",
+            "model"
+          ]
+        },
+        "parts": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "authorProfileVersion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "createdAt",
+        "name",
+        "specialty",
+        "writingStyle",
+        "coreDirectives",
+        "tags"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "createdAt": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "specialty": {
+          "type": "string"
+        },
+        "writingStyle": {
+          "type": "string"
+        },
+        "coreDirectives": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "author": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "specialty",
+        "writingStyle",
+        "coreDirectives",
+        "createdAt"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "specialty": {
+          "type": "string"
+        },
+        "writingStyle": {
+          "type": "string"
+        },
+        "coreDirectives": {
+          "type": "string"
+        },
+        "createdAt": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "memoryCache": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "metaChatHistory": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/content"
+          }
+        },
+        "generalChatHistory": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/content"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "isDefault": {
+          "type": "boolean"
+        },
+        "role": {
+          "const": "Co-Developer"
+        },
+        "profileVersions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/authorProfileVersion"
+          }
+        }
+      }
+    },
+    "character": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "personality",
+        "appearance",
+        "background",
+        "log"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "personality": {
+          "type": "string"
+        },
+        "appearance": {
+          "type": "string"
+        },
+        "background": {
+          "type": "string"
+        },
+        "log": {
+          "type": "string"
+        },
+        "interviewHistory": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/content"
+          }
+        }
+      }
+    },
+    "worldviewFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "filename",
+        "content"
+      ],
+      "properties": {
+        "filename": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "content": {
+          "type": "string"
+        }
+      }
+    },
+    "chapterTrace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["revision", "createdAt", "updatedAt", "source"],
+      "properties": {
+        "revision": { "type": "integer", "minimum": 1 },
+        "createdAt": { "$ref": "#/$defs/timestamp" },
+        "updatedAt": { "$ref": "#/$defs/timestamp" },
+        "source": { "enum": ["ai", "manual", "imported", "legacy", "translated"] },
+        "originChapterId": { "type": "string" },
+        "generationBatchId": { "type": "string" },
+        "batchPosition": { "type": "integer", "minimum": 1 },
+        "batchSize": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "chapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "content"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "trace": {
+          "$ref": "#/$defs/chapterTrace"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "content": {
+          "type": "string"
+        },
+        "feedbackChat": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/content"
+          }
+        },
+        "authorInterlude": {
+          "type": "string"
+        },
+        "chapterNumber": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "canonFact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "subject", "value", "status", "locked", "createdAt", "updatedAt"],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyString" },
+        "kind": { "enum": ["character-state", "relationship", "possession", "secret", "location", "world-rule", "other"] },
+        "subject": { "$ref": "#/$defs/nonEmptyString" },
+        "value": { "$ref": "#/$defs/nonEmptyString" },
+        "sourceChapterId": { "type": "string" },
+        "sourceRevision": { "type": "integer", "minimum": 1 },
+        "validFromChapterId": { "type": "string" },
+        "validUntilChapterId": { "type": "string" },
+        "status": { "enum": ["confirmed", "draft"] },
+        "locked": { "type": "boolean" },
+        "supersedesFactId": { "type": "string" },
+        "createdAt": { "$ref": "#/$defs/timestamp" },
+        "updatedAt": { "$ref": "#/$defs/timestamp" }
+      }
+    },
+    "episodePacing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "isEnabled",
+        "goal",
+        "speed"
+      ],
+      "properties": {
+        "isEnabled": {
+          "type": "boolean"
+        },
+        "goal": {
+          "type": "string"
+        },
+        "speed": {
+          "enum": [
+            "fast",
+            "normal",
+            "slow"
+          ]
+        },
+        "scope": {
+          "enum": [
+            "next-chapter",
+            "until-complete"
+          ]
+        },
+        "destination": {
+          "type": "string"
+        }
+      }
+    },
+    "episodeArcChapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "goal",
+        "keyEvents",
+        "pacing",
+        "cliffhanger"
+      ],
+      "properties": {
+        "goal": {
+          "type": "string"
+        },
+        "keyEvents": {
+          "type": "string"
+        },
+        "pacing": {
+          "enum": [
+            "fast",
+            "normal",
+            "slow"
+          ]
+        },
+        "cliffhanger": {
+          "type": "string"
+        },
+        "directorsNote": {
+          "type": "string"
+        }
+      }
+    },
+    "episodeArc": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "goal",
+        "chapters",
+        "startChapterIndex"
+      ],
+      "properties": {
+        "goal": {
+          "type": "string"
+        },
+        "chapters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/episodeArcChapter"
+          }
+        },
+        "startChapterIndex": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "treatmentEpisode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "episodeNumber",
+        "title",
+        "goal",
+        "scenes",
+        "characters",
+        "emotion",
+        "hook"
+      ],
+      "properties": {
+        "episodeNumber": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "localSetting": {
+          "type": "string"
+        },
+        "goal": {
+          "type": "string"
+        },
+        "scenes": {
+          "type": "string"
+        },
+        "characters": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "emotion": {
+          "type": "string"
+        },
+        "hook": {
+          "type": "string"
+        }
+      }
+    },
+    "treatment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "premise",
+        "synopsis",
+        "tone",
+        "genreStrategy",
+        "episodes",
+        "createdAt"
+      ],
+      "properties": {
+        "premise": {
+          "type": "string"
+        },
+        "synopsis": {
+          "type": "string"
+        },
+        "tone": {
+          "type": "string"
+        },
+        "genreStrategy": {
+          "type": "string"
+        },
+        "episodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/treatmentEpisode"
+          }
+        },
+        "createdAt": {
+          "$ref": "#/$defs/timestamp"
+        }
+      }
+    },
+    "contextManagement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "isEnabled",
+        "fullTextChapters",
+        "summaryTriggerChapters"
+      ],
+      "properties": {
+        "isEnabled": {
+          "type": "boolean"
+        },
+        "fullTextChapters": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "summaryTriggerChapters": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "contextCaching": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "isEnabled",
+        "activeBufferWindow",
+        "caches"
+      ],
+      "properties": {
+        "isEnabled": {
+          "type": "boolean"
+        },
+        "activeBufferWindow": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "caches": {
+          "type": "object",
+          "maxProperties": 0,
+          "description": "원격 모델 캐시 식별자는 절대 전달하지 않는다. 제작 패키지에서는 항상 빈 객체다."
+        }
+      }
+    },
+    "webnovelSettings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "isEnabled",
+        "genre",
+        "platform",
+        "style",
+        "autoApplyRules"
+      ],
+      "properties": {
+        "isEnabled": {
+          "type": "boolean"
+        },
+        "genre": {
+          "enum": [
+            "romance-fantasy",
+            "modern-fantasy-f",
+            "romance",
+            "bl",
+            "hunter",
+            "martial-arts",
+            "game-fantasy",
+            "academy",
+            "regression",
+            "possession",
+            "fusion",
+            "alt-history",
+            "mystery",
+            "horror",
+            "slice-of-life",
+            "custom"
+          ]
+        },
+        "customGenreName": {
+          "type": "string"
+        },
+        "platform": {
+          "enum": [
+            "munpia",
+            "kakao-page",
+            "ridi",
+            "novelpia",
+            "series",
+            "joara",
+            "custom"
+          ]
+        },
+        "style": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "breathing",
+            "dialogue",
+            "hooking"
+          ],
+          "properties": {
+            "breathing": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "targetLength",
+                "rhythmPattern",
+                "maxLinesPerParagraph"
+              ],
+              "properties": {
+                "targetLength": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "min",
+                    "max"
+                  ],
+                  "properties": {
+                    "min": {
+                      "type": "number",
+                      "minimum": 1
+                    },
+                    "max": {
+                      "type": "number",
+                      "minimum": 1
+                    }
+                  }
+                },
+                "rhythmPattern": {
+                  "enum": [
+                    "long-long-short",
+                    "short-short-long",
+                    "varied",
+                    "consistent"
+                  ]
+                },
+                "maxLinesPerParagraph": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            },
+            "dialogue": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "minDialogueRatio",
+                "maxConsecutiveNarration",
+                "enforceCharacterVoice"
+              ],
+              "properties": {
+                "minDialogueRatio": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 100
+                },
+                "maxConsecutiveNarration": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "enforceCharacterVoice": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "hooking": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "cliffhangerIntensity",
+                "catharsisBias",
+                "minCatharsisPerEpisode",
+                "tensionBuildupStart"
+              ],
+              "properties": {
+                "cliffhangerIntensity": {
+                  "enum": [
+                    "mild",
+                    "moderate",
+                    "strong"
+                  ]
+                },
+                "catharsisBias": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 100
+                },
+                "minCatharsisPerEpisode": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "tensionBuildupStart": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 100
+                }
+              }
+            }
+          }
+        },
+        "autoApplyRules": {
+          "type": "boolean"
+        }
+      }
+    },
+    "volumeBlueprint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "volumeNumber",
+        "title",
+        "goal",
+        "mainConflict",
+        "keyEvents",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "volumeNumber": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "displayLabel": {
+          "type": "string"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "goal": {
+          "type": "string"
+        },
+        "mainConflict": {
+          "type": "string"
+        },
+        "keyEvents": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "planned",
+            "drafting",
+            "completed"
+          ]
+        },
+        "linkedNovelId": {
+          "type": "string"
+        },
+        "isLocked": {
+          "type": "boolean"
+        }
+      }
+    },
+    "seriesBlueprint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "worldview",
+        "mainConflict",
+        "characterArcs",
+        "volumes",
+        "lastUpdated"
+      ],
+      "properties": {
+        "worldview": {
+          "type": "string"
+        },
+        "mainConflict": {
+          "type": "string"
+        },
+        "characterArcs": {
+          "type": "string"
+        },
+        "volumes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/volumeBlueprint"
+          }
+        },
+        "lastUpdated": {
+          "$ref": "#/$defs/timestamp"
+        }
+      }
+    },
+    "series": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "seriesPlotSummary",
+        "characters",
+        "novelIds",
+        "createdAt"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "seriesPlotSummary": {
+          "type": "string"
+        },
+        "blueprint": {
+          "$ref": "#/$defs/seriesBlueprint"
+        },
+        "characters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/character"
+          }
+        },
+        "worldviewFiles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/worldviewFile"
+          }
+        },
+        "novelIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          },
+          "uniqueItems": true
+        },
+        "createdAt": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "seriesMemoryCompendium": {
+          "type": "string"
+        },
+        "seriesMemoryState": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["blocks", "combinedSignature", "generatedAt"],
+          "properties": {
+            "blocks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["novelId", "volumeLabel", "novelTitle", "sourceSignature", "content", "generatedAt"],
+                "properties": {
+                  "novelId": { "$ref": "#/$defs/nonEmptyString" },
+                  "volumeId": { "$ref": "#/$defs/nonEmptyString" },
+                  "volumeLabel": { "$ref": "#/$defs/nonEmptyString" },
+                  "novelTitle": { "$ref": "#/$defs/nonEmptyString" },
+                  "sourceSignature": { "$ref": "#/$defs/nonEmptyString" },
+                  "content": { "type": "string" },
+                  "generatedAt": { "$ref": "#/$defs/timestamp" }
+                }
+              }
+            },
+            "combinedSignature": { "type": "string" },
+            "generatedAt": { "$ref": "#/$defs/timestamp" }
+          }
+        }
+      }
+    },
+    "novel": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "id",
+        "title",
+        "subject",
+        "mood",
+        "plotSummary",
+        "chapters",
+        "history",
+        "createdAt",
+        "aiAuthorId",
+        "characters"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "mood": {
+          "type": "string"
+        },
+        "plotSummary": {
+          "type": "string"
+        },
+        "chapters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/chapter"
+          }
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/content"
+          }
+        },
+        "createdAt": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "aiAuthorId": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/nonEmptyString"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "seriesId": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "volumeNumber": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "seriesVolumeId": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "seriesVolumePlanSnapshot": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "sourceSeriesId",
+            "sourceVolumeId",
+            "volumeNumber",
+            "displayLabel",
+            "title",
+            "goal",
+            "mainConflict",
+            "keyEvents",
+            "capturedAt"
+          ],
+          "properties": {
+            "sourceSeriesId": { "$ref": "#/$defs/nonEmptyString" },
+            "sourceVolumeId": { "$ref": "#/$defs/nonEmptyString" },
+            "volumeNumber": { "type": "integer", "minimum": 1 },
+            "displayLabel": { "type": "string" },
+            "title": { "type": "string" },
+            "localSetting": { "type": "string" },
+            "goal": { "type": "string" },
+            "mainConflict": { "type": "string" },
+            "keyEvents": { "type": "string" },
+            "capturedAt": { "$ref": "#/$defs/timestamp" }
+          }
+        },
+        "targetCharacterCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "targetChapterCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "preventAutoEnding": {
+          "type": "boolean"
+        },
+        "characters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/character"
+          }
+        },
+        "worldviewFiles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/worldviewFile"
+          }
+        },
+        "canonFacts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/canonFact" }
+        },
+        "coverImage": {
+          "type": "string"
+        },
+        "useLorekeeper": {
+          "type": "boolean"
+        },
+        "avoidRepetition": {
+          "type": "boolean"
+        },
+        "episodePacing": {
+          "$ref": "#/$defs/episodePacing"
+        },
+        "episodeArc": {
+          "$ref": "#/$defs/episodeArc"
+        },
+        "treatment": {
+          "$ref": "#/$defs/treatment"
+        },
+        "generationEngine": {
+          "enum": [
+            "gemini-3.8-flash",
+            "gemini-3.7-flash",
+            "gemini-3-flash-preview",
+            "gemini-3.6-flash",
+            "gemini-2.5-flash",
+            "gemini-3.5-flash-lite",
+            "gemini-3.1-flash-lite",
+            "gemini-3.1-pro-preview",
+            "gemini-2.5-pro",
+            "grok-4-fast",
+            "grok-4",
+            "grok-3",
+            "glm-5"
+          ]
+        },
+        "targetedGenerationEnabled": {
+          "type": "boolean",
+          "description": "true면 목표 분량과 연속 집필을 사용하고 false면 자율 한 턴으로 집필한다."
+        },
+        "chapterTargetCharacters": {
+          "type": "integer",
+          "minimum": 2000,
+          "maximum": 15000
+        },
+        "chapterGenerationMode": {
+          "enum": [
+            "single",
+            "extended",
+            "batch2",
+            "batch3"
+          ]
+        },
+        "maxTokens": {
+          "type": "integer",
+          "minimum": 2048,
+          "maximum": 65536
+        },
+        "webnovelSettings": {
+          "$ref": "#/$defs/webnovelSettings"
+        },
+        "openingStyle": {
+          "enum": [
+            "intense",
+            "buildup",
+            "mystery",
+            "prologue"
+          ]
+        },
+        "startingPoint": {
+          "enum": [
+            "daily",
+            "crack",
+            "before-incident",
+            "mid-incident"
+          ]
+        },
+        "contextManagement": {
+          "$ref": "#/$defs/contextManagement"
+        },
+        "contextCaching": {
+          "$ref": "#/$defs/contextCaching"
+        },
+        "authorMemoryByAuthor": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "liveFeedbackChat": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/content"
+          }
+        },
+        "writingDirectives": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/content"
+          }
+        },
+        "directingChatHistory": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/content"
+          }
+        }
+      },
+      "not": {
+        "anyOf": [
+          {
+            "required": [
+              "lorekeeperCache"
+            ]
+          },
+          {
+            "required": [
+              "generationLogs"
+            ]
+          }
+        ]
+      }
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authors",
+        "series",
+        "novels"
+      ],
+      "properties": {
+        "authors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/author"
+          }
+        },
+        "series": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/series"
+          }
+        },
+        "novels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/novel"
+          }
+        }
+      }
+    }
+  }
+}

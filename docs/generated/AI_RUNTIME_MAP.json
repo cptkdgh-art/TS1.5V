@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "sourceMapSchemaVersion": 3,
+  "sourceRoot": "src",
+  "verification": "Every verifiedExports reference is checked against the current TypeScript AST before generation.",
+  "flows": [
+    {
+      "id": "novel-writing",
+      "task": "Stream the next novel chapter and persist the accepted result",
+      "model": {
+        "authority": "continueNovelStream",
+        "file": "src/@services/ai/generation.ts",
+        "selection": [
+          "novel.generationEngine",
+          "legacy Gemini and GLM model normalization inside continueNovelStream",
+          "provider detection inside continueNovelStream",
+          "MODELS.TEXT only when the novel has no usable engine"
+        ],
+        "policyHelper": "getAiTaskModel('writing') describes the intended policy but is not called by continueNovelStream"
+      },
+      "context": {
+        "authority": "continueNovelStream",
+        "file": "src/@services/ai/generation.ts",
+        "helpers": [
+          "buildWriterSystemInstruction",
+          "resolveStoryMemory",
+          "buildPreviousBriefing",
+          "injectUnifiedBriefing"
+        ],
+        "diagnosticProjection": "buildWritingContext is used by diagnostics, the Codex bridge, and Director Clio; it is not the Gemini novel-writing assembler"
+      },
+      "cache": {
+        "authority": "manageContextCache",
+        "file": "src/@services/ai/caching.ts",
+        "behavior": "Gemini-only summary or raw context cache selected inside continueNovelStream; xAI and GLM skip it"
+      },
+      "retry": {
+        "authority": "continueNovelStream",
+        "file": "src/@services/ai/generation.ts",
+        "behavior": "Up to three attempts; retryable Gemini failures may select getGeminiOverloadFallbackModel and skip cache on the next attempt"
+      },
+      "persistence": {
+        "authority": "useChapterGeneration -> onMutateNovel",
+        "file": "src/@modules/editor/hooks/useChapterGeneration.ts",
+        "behavior": "Success, explicit cancellation, and non-retryable error recovery merge into the latest novel state through novelStore.mutateNovel"
+      },
+      "cancellation": {
+        "partialPersistence": true,
+        "behavior": "The hook returns accumulated cancellation text and preserves more than 50 characters as a resumable incomplete chapter"
+      },
+      "verifiedExports": [
+        {
+          "file": "src/@services/ai/generation.ts",
+          "symbol": "continueNovelStream"
+        },
+        {
+          "file": "src/@services/ai/prompts.ts",
+          "symbol": "buildWriterSystemInstruction"
+        },
+        {
+          "file": "src/@services/ai/writingContext.ts",
+          "symbol": "resolveStoryMemory"
+        },
+        {
+          "file": "src/@services/ai/historyBudget.ts",
+          "symbol": "buildPreviousBriefing"
+        },
+        {
+          "file": "src/@services/ai/briefing.ts",
+          "symbol": "injectUnifiedBriefing"
+        },
+        {
+          "file": "src/@services/ai/caching.ts",
+          "symbol": "manageContextCache"
+        },
+        {
+          "file": "src/@services/ai/config.ts",
+          "symbol": "getGeminiOverloadFallbackModel"
+        },
+        {
+          "file": "src/@modules/editor/hooks/useChapterGeneration.ts",
+          "symbol": "useChapterGeneration"
+        }
+      ]
+    },
+    {
+      "id": "shared-writing-context-read",
+      "task": "Project saved author and story state for diagnostics and external readers",
+      "model": {
+        "authority": null,
+        "file": null,
+        "selection": [
+          "No model is selected by this projection"
+        ],
+        "policyHelper": null
+      },
+      "context": {
+        "authority": "buildWritingContext",
+        "file": "src/@services/ai/writingContext.ts",
+        "helpers": [
+          "resolveStoryMemory"
+        ],
+        "consumers": [
+          "src/@modules/editor/tabs/CacheTab.tsx",
+          "src/@services/bridge/index.ts",
+          "src/@services/director-clio/context.ts"
+        ]
+      },
+      "cache": {
+        "authority": null,
+        "file": null,
+        "behavior": "Reports saved summary and raw ranges; does not create a Gemini cache"
+      },
+      "retry": {
+        "authority": null,
+        "file": null,
+        "behavior": "Pure synchronous projection"
+      },
+      "persistence": {
+        "authority": null,
+        "file": null,
+        "behavior": "Read-only; generatedAt is the only transient field"
+      },
+      "cancellation": {
+        "partialPersistence": null,
+        "behavior": "Not applicable"
+      },
+      "verifiedExports": [
+        {
+          "file": "src/@services/ai/writingContext.ts",
+          "symbol": "buildWritingContext"
+        },
+        {
+          "file": "src/@services/ai/writingContext.ts",
+          "symbol": "resolveStoryMemory"
+        }
+      ]
+    }
+  ]
+}

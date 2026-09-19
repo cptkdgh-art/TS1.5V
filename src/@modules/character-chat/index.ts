@@ -1,0 +1,1 @@
+export { CharacterChatApp } from './CharacterChatApp';

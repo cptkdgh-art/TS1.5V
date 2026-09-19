@@ -1,0 +1,36 @@
+node_modules
+dist
+dev-dist
+test-results
+playwright-report
+.env
+.env.local
+*.local
+.DS_Store
+nul
+*.zip
+*.tsbuildinfo
+
+.vercel
+
+# AI Tools
+.agent/
+.agents/
+.gemini/
+.opencode/
+.claude/
+
+# Build/Deploy logs
+build*.txt
+build_log*.txt
+deploy*.txt
+deploy_out.txt
+vercel_*.txt
+bd_*.txt
+
+# 로컬 배포 스크립트 (개인 절대경로 포함, 머신별)
+*.bat
+
+# tsc -b composite 빌드 아웃풋 (vite.config.ts)
+vite.config.js
+vite.config.d.ts

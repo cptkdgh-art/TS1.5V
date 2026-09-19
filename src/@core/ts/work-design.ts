@@ -276,6 +276,7 @@ export function buildTsWorkDesignBrief(design: TsWorkDesign): string {
   const tradition = getTsNarrativeTradition(design.narrativeTradition);
   const expressionBalance = TS_EXPRESSION_BALANCE.find((item) => item.id === design.expressionBalance);
   const preferenceTags = getTsPreferenceTags(design.preferenceTagIds || []);
+  const seriesDesign = design.workKind === 'series' ? design as TsSeriesDesign : null;
 
   const label = (item?: LocalizedOption) => item ? getLocalizedLabel(item, design.manuscriptLanguage) : '';
 
@@ -291,11 +292,11 @@ export function buildTsWorkDesignBrief(design: TsWorkDesign): string {
     expressionBalance ? `표현 비중: ${label(expressionBalance)}` : '',
     preferenceTags.length ? `취향·소재: ${preferenceTags.map(label).join(', ')}` : '',
     design.storyCore.trim() ? `작품 핵심: ${design.storyCore.trim()}` : '',
-    design.workKind === 'series' && 'seriesCore' in design && design.seriesCore.trim()
-      ? `시리즈 전체 핵심: ${design.seriesCore.trim()}`
+    seriesDesign?.seriesCore.trim()
+      ? `시리즈 전체 핵심: ${seriesDesign.seriesCore.trim()}`
       : '',
-    design.workKind === 'series' && 'volume1Core' in design && design.volume1Core.trim()
-      ? `1권 핵심 전개: ${design.volume1Core.trim()}`
+    seriesDesign?.volume1Core.trim()
+      ? `1권 핵심 전개: ${seriesDesign.volume1Core.trim()}`
       : '',
   ].filter(Boolean).join('\n');
 }

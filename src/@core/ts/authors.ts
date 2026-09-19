@@ -290,9 +290,9 @@ export interface TsAuthorMatchInput {
  * 결과의 절대 점수보다 "왜 추천했는지"를 설명하기 위한 용도다.
  */
 export function scoreTsAuthorMatch(author: TsAuthorProfile, input: TsAuthorMatchInput): number {
-  const authorTypes = new Set([author.tsType.primary, ...author.tsType.secondary].filter(Boolean));
-  const authorSubgenres = new Set([author.subgenre.primary, ...author.subgenre.secondary].filter(Boolean));
-  const authorMoods = new Set([author.mood.primary, ...author.mood.secondary].filter(Boolean));
+  const authorTypes = new Set([author.tsType.primary, ...author.tsType.secondary].filter((value): value is string => Boolean(value)));
+  const authorSubgenres = new Set([author.subgenre.primary, ...author.subgenre.secondary].filter((value): value is string => Boolean(value)));
+  const authorMoods = new Set([author.mood.primary, ...author.mood.secondary].filter((value): value is string => Boolean(value)));
   const strengths = new Set(author.strengthIds);
 
   const overlap = (targets: string[] | undefined, source: Set<string>, weight: number) =>

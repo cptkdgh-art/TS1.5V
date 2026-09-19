@@ -1,0 +1,144 @@
+{
+  "kind": "jinpok-production-package",
+  "schemaVersion": 1,
+  "package": {
+    "packageId": "package-example-private-foundation-volume-1-r1",
+    "lineageId": "lineage-example-private-foundation",
+    "revision": 1,
+    "parentPackageId": null,
+    "title": "프라이빗 재단 1권 기획 패키지",
+    "purpose": "planning",
+    "publisher": "진폭출판사 기획팀",
+    "createdAt": "2026-08-28T12:00:00.000Z",
+    "sourceApp": "jinpok-stido",
+    "sourceSchema": "1.5"
+  },
+  "sourceWorkspace": {
+    "id": "publisher-planning-workspace",
+    "name": "진폭출판사 기획실"
+  },
+  "manifest": {
+    "sections": {
+      "authors": true,
+      "workCore": true,
+      "planning": true,
+      "worldbuilding": false,
+      "manuscript": false,
+      "memory": false,
+      "collaboration": false,
+      "assets": false
+    },
+    "counts": {
+      "authors": 1,
+      "series": 1,
+      "novels": 1,
+      "chapters": 0,
+      "characters": 0,
+      "worldviewFiles": 0
+    },
+    "omittedSensitiveFields": [
+      "appSettings",
+      "apiKeys",
+      "remoteCacheHandles",
+      "lorekeeperCache",
+      "generationLogs"
+    ],
+    "assetBytes": 0
+  },
+  "payload": {
+    "authors": [
+      {
+        "id": "author-private-foundation",
+        "name": "긴장 설계자",
+        "specialty": "현대 미스터리, 조직극, 장기 복선",
+        "writingStyle": "인물의 선택과 정보 공개를 중심으로 긴장을 단계적으로 높이는 제한적 3인칭 문체",
+        "coreDirectives": "시리즈 공통 설정과 현재 권의 목표를 구분한다. 같은 의심을 반복하지 않고 새로운 정보와 결정으로 전진한다.",
+        "createdAt": 1787928000000,
+        "tags": [
+          "시리즈",
+          "미스터리",
+          "장기복선"
+        ],
+        "isDefault": false,
+        "profileVersions": []
+      }
+    ],
+    "series": [
+      {
+        "id": "series-private-foundation",
+        "title": "프라이빗 재단",
+        "seriesPlotSummary": "서로 다른 시설에서 벌어지는 사건들이 하나의 재단과 연결되어 있음을 여러 권에 걸쳐 추적한다.",
+        "blueprint": {
+          "worldview": "재단은 사회 곳곳에 합법적인 시설과 비공개 조직망을 동시에 운영한다.",
+          "mainConflict": "재단의 보호를 받는 인물들과 그 질서를 의심하는 인물들의 선택이 충돌한다.",
+          "characterArcs": "주인공은 재단의 혜택을 경험한 뒤 그 대가와 숨은 규칙을 단계적으로 확인한다.",
+          "volumes": [
+            {
+              "id": "volume-private-foundation-01",
+              "volumeNumber": 1,
+              "displayLabel": "제1권 프라이빗 센터",
+              "title": "프라이빗 센터",
+              "goal": "센터의 일상과 혜택을 보여주면서 제한 구역의 존재를 확신하게 한다.",
+              "mainConflict": "센터를 신뢰하고 싶은 마음과 감춰진 기록에 대한 의심이 충돌한다.",
+              "keyEvents": "센터 입사, 첫 담당 고객, 출입 기록의 모순, 제한 구역 확인 결심",
+              "status": "drafting",
+              "linkedNovelId": "novel-private-foundation-01",
+              "isLocked": false
+            },
+            {
+              "id": "volume-private-foundation-02",
+              "volumeNumber": 2,
+              "displayLabel": "제2권 프라이빗 메디컬",
+              "title": "프라이빗 메디컬",
+              "goal": "센터에서 발견한 기록을 메디컬 시설의 가족계획 사업과 연결한다.",
+              "mainConflict": "개인의 선택과 재단이 설계한 장기 계획이 충돌한다.",
+              "keyEvents": "메디컬 시설 이동, 보존 기록 확인, 재단 이사회 흔적 발견",
+              "status": "planned",
+              "isLocked": false
+            }
+          ],
+          "lastUpdated": 1787928000000
+        },
+        "characters": [],
+        "worldviewFiles": [],
+        "novelIds": [
+          "novel-private-foundation-01"
+        ],
+        "createdAt": 1787928000000,
+        "seriesMemoryCompendium": ""
+      }
+    ],
+    "novels": [
+      {
+        "id": "novel-private-foundation-01",
+        "title": "프라이빗 센터",
+        "subject": "재단 산하 센터에 입사한 주인공이 시설의 혜택과 숨은 규칙을 동시에 발견하는 이야기",
+        "mood": "정돈된 일상 아래에 위화감이 천천히 쌓이는 현대 미스터리",
+        "plotSummary": "주인공은 센터의 안정적인 업무와 고객 관계에 적응하지만 출입 기록의 모순을 발견한다. 작은 단서들이 제한 구역으로 이어지면서 센터를 향한 신뢰가 의심으로 바뀐다.",
+        "chapters": [],
+        "history": [],
+        "createdAt": 1787928000000,
+        "aiAuthorId": "author-private-foundation",
+        "seriesId": "series-private-foundation",
+        "seriesVolumeId": "volume-private-foundation-01",
+        "volumeNumber": 1,
+        "targetCharacterCount": 360000,
+        "targetChapterCount": 60,
+        "preventAutoEnding": true,
+        "characters": [],
+        "useLorekeeper": true,
+        "avoidRepetition": true,
+        "episodePacing": {
+          "isEnabled": true,
+          "goal": "재단과 센터에 대한 작은 위화감을 확실한 의심으로 키운다.",
+          "scope": "until-complete",
+          "destination": "주인공이 제한 구역을 직접 확인하기로 결심한다.",
+          "speed": "normal"
+        },
+        "chapterTargetCharacters": 6000,
+        "chapterGenerationMode": "single",
+        "generationEngine": "gemini-3.7-flash"
+      }
+    ]
+  }
+}
