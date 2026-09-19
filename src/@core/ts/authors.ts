@@ -66,6 +66,7 @@ export const TS_AUTHOR_STRENGTHS: LocalizedOption[] = [
   { id: 'serial_hook', ko: '회차 후킹', en: 'Serial Hooks' },
   { id: 'feminization', ko: '여성화 과정', en: 'Feminization Arc' },
   { id: 'identity', ko: '자아·정체성', en: 'Identity' },
+  { id: 'sensory_detail', ko: '신체·감각 디테일', en: 'Body / Sensory Detail' },
 ];
 
 /**
